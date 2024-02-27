@@ -29,7 +29,8 @@ const main = async () => {
       .from(users);
 
     if (countUsers[0]?.usersCount > 0) {
-      throw new Error('Database is already seeded.');
+      console.log('Data already seeded');
+      process.exit(0);
     }
 
     for (let i = 0; i < 10; i++) {
@@ -46,6 +47,7 @@ const main = async () => {
     await db.insert(users).values(userData);
     await sqlConnection.end();
     console.log('Seeding successful');
+    process.exit(0);
   } catch (error) {
     console.error(error);
     await sqlConnection.end();
