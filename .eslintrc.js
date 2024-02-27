@@ -1,7 +1,7 @@
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
   env: { node: true },
-  extends: ['eslint:recommended', 'plugin:unicorn/recommended', 'prettier'],
+  extends: ['eslint:recommended', 'prettier'],
   ignorePatterns: ['!**/*'],
   overrides: [
     {
@@ -26,8 +26,5 @@ module.exports = {
     'simple-import-sort/exports': 'error',
     'simple-import-sort/imports': 'error',
     'sort-keys-fix/sort-keys-fix': 'error',
-    'unicorn/filename-case': 'off',
-    'unicorn/prefer-module': 'off',
-    'unicorn/prevent-abbreviations': 'off',
   },
 };
