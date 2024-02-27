@@ -48,7 +48,9 @@ jobs:
         run: |
           touch .env
 
-          echo DATABASE_URL=${{ steps.create-branch.outputs.db_url_with_pooler }}?sslmode=require >> .env
+          echo ${{ steps.create-branch.outputs.host_with_pooler }}
+
+          echo DATABASE_URL=postgresql://${{ env.NEON_DATABASE_USERNAME }}:${{ steps.create-branch.outputs.password }}@${{ steps.create-branch.outputs.host_with_pooler }}/neon-preview?sslmode=require >> .env
 
           pnpm run db:migrate
           pnpm run db:seed
