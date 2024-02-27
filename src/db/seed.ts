@@ -35,6 +35,7 @@ const main = async () => {
     for (let i = 0; i < 10; i++) {
       userData.push({
         name: faker.person.fullName(),
+        displayName: faker.internet.userName(),
         email: faker.internet.email(),
         password: faker.internet.password(),
         role: faker.datatype.boolean(0.1) ? 'admin' : 'customer',
