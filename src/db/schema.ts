@@ -1,5 +1,5 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
-import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+import { pgTable, serial, text, timestamp, boolean } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('user', {
   id: serial('id'),
@@ -9,5 +9,5 @@ export const users = pgTable('user', {
   role: text('role').$type<'admin' | 'customer'>(),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
-  isSubscribed: text('is_subscribed').default('true'),
+  isSubscribed: boolean('is_subscribed').default(false),
 });

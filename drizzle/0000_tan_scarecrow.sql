@@ -6,5 +6,5 @@ CREATE TABLE IF NOT EXISTS "user" (
 	"role" text,
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now(),
-	"is_subscribed" text DEFAULT 'true'
+	"is_subscribed" boolean
 );

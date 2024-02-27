@@ -15,6 +15,7 @@
     "build": "pnpm tsc --build",
     "db:generate": "drizzle-kit generate:pg --schema ./src/db/schema.ts",
     "db:migrate": "tsx ./src/db/migrate.ts",
+    "db:seed": "tsx ./src/db/seed.ts",
     "dev": "pnpm tsx watch ./src/index.ts",
     "format": "prettier --write .",
     "lint": "eslint ./src --fix",
@@ -29,8 +30,9 @@
     "postgres": "^3.4.3"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@flydotio/dockerfile": "^0.5.2",
-    "@types/node": "^20.11.20",
+    "@types/node": "^20.11.21",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
     "@typescript-eslint/parser": "^7.1.0",
     "drizzle-kit": "^0.20.14",
