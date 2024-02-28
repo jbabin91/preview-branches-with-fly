@@ -29,12 +29,14 @@ const main = async () => {
       .from(users);
 
     if (countUsers[0]?.usersCount > 0) {
-      throw new Error('Database is already seeded.');
+      console.log('Data already seeded');
+      process.exit(0);
     }
 
     for (let i = 0; i < 10; i++) {
       userData.push({
         name: faker.person.fullName(),
+        displayName: faker.internet.userName(),
         email: faker.internet.email(),
         password: faker.internet.password(),
         role: faker.datatype.boolean(0.1) ? 'admin' : 'customer',
@@ -45,6 +47,7 @@ const main = async () => {
     await db.insert(users).values(userData);
     await sqlConnection.end();
     console.log('Seeding successful');
+    process.exit(0);
   } catch (error) {
     console.error(error);
     await sqlConnection.end();

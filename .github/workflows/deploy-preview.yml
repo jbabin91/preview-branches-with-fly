@@ -4,10 +4,13 @@ on: [pull_request]
 
 env:
   NEON_DATABASE_USERNAME: ${{ secrets.NEON_DATABASE_USERNAME }} # change this to your database username
-  # GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Required for commenting on pull requests for private repos
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Required for commenting on pull requests for private repos
   NEON_API_KEY: ${{ secrets.NEON_API_KEY }} # You can generate an API key in your account settings
   NEON_PROJECT_ID: ${{ secrets.NEON_PROJECT_ID }} # You can find this in your project settings
   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }} # You can generate a Fly API token in your account settings
+
+permissions:
+  pull-requests: write
 
 jobs:
   deploy-preview:
@@ -48,7 +51,9 @@ jobs:
         run: |
           touch .env
 
-          echo DATABASE_URL=${{ steps.create-branch.outputs.db_url_with_pooler }}?sslmode=require >> .env
+          echo ${{ steps.create-branch.outputs.host_with_pooler }}
+
+          echo DATABASE_URL=postgresql://${{ env.NEON_DATABASE_USERNAME }}:${{ steps.create-branch.outputs.password }}@${{ steps.create-branch.outputs.host_with_pooler }}/neon-preview?sslmode=require >> .env
 
           pnpm run db:migrate
           pnpm run db:seed
@@ -57,12 +62,12 @@ jobs:
         id: deploy
         uses: superfly/fly-pr-review-apps@1.2.0
         with:
-          secrets: DATABASE_URL=${{ steps.create-branch.outputs.db_url }}?sslmode=require
+          secrets: DATABASE_URL=postgresql://${{ env.NEON_DATABASE_USERNAME }}:${{ steps.create-branch.outputs.password }}@${{ steps.create-branch.outputs.host_with_pooler }}/neon-preview?sslmode=require
 
       - name: Comment on Pull Request
         uses: thollander/actions-comment-pull-request@v2
         with:
-          # GITHUB_TOKEN: ${{ env.GH_TOKEN }} # Required for commenting on pull requests for private repos
+          GITHUB_TOKEN: ${{ env.GH_TOKEN }} # Required for commenting on pull requests for private repos
           message: |
             Fly Preview URL :balloon: : ${{ steps.deploy.outputs.url }}
             Neon branch :elephant: : https://console.neon.tech/app/projects/${{ secrets.NEON_PROJECT_ID }}/branches/${{ steps.create-branch.outputs.branch_id }}
